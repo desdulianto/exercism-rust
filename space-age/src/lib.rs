@@ -2,8 +2,10 @@
 // In order to pass the tests you can add-to or change any of this code.
 
 macro_rules! orbital_periods (
-    { $($t:ty => $x:expr),* } => {
+    { $($t:ident => $x:expr),* } => {
         $(
+            pub struct $t;
+
             impl Planet for $t {
                 fn orbital_period() -> f64 {
                     $x
@@ -31,15 +33,6 @@ pub trait Planet {
         d.0 as f64 / (Self::orbital_period() * Self::EARTH_YEAR_SECONDS)
     }
 }
-
-pub struct Mercury;
-pub struct Venus;
-pub struct Earth;
-pub struct Mars;
-pub struct Jupiter;
-pub struct Saturn;
-pub struct Uranus;
-pub struct Neptune;
 
 orbital_periods!(
     Mercury => 0.2408467,
