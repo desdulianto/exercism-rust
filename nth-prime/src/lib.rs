@@ -3,15 +3,8 @@ fn is_prime(n: u32) -> bool {
 }
 
 pub fn nth(n: u32) -> u32 {
-    let mut count: i32 = -1;
-    let mut number = 2;
-    loop {
-        if is_prime(number) {
-            count += 1;
-        }
-        if count as u32 == n {
-            return number;
-        }
-        number += 1;
+    match (2..).filter(|x| is_prime(*x)).nth(n as usize) {
+        Some(x) => x,
+        None => 0,
     }
 }
