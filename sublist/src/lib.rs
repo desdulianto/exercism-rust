@@ -18,9 +18,8 @@ pub fn sublist<T: PartialEq>(_first_list: &[T], _second_list: &[T]) -> Compariso
     let is_sublist = (0..=(longer.len() - shorter.len()))
         .any(|i| longer[i..].iter().zip(shorter.iter()).all(|x| x.0 == x.1));
 
-    if is_sublist {
-        comparison
-    } else {
-        Comparison::Unequal
+    match is_sublist {
+        true => comparison,
+        _ => Comparison::Unequal,
     }
 }
