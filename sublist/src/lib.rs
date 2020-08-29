@@ -15,12 +15,8 @@ pub fn sublist<T: PartialEq>(_first_list: &[T], _second_list: &[T]) -> Compariso
         Ordering::Less => (_second_list, _first_list, Comparison::Sublist),
     };
 
-    let is_sublist = (0..=(longer.len() - shorter.len())).any(|i| {
-        longer[i..]
-            .iter()
-            .zip(shorter.iter())
-            .all(|x| x.0 == x.1)
-    });
+    let is_sublist = (0..=(longer.len() - shorter.len()))
+        .any(|i| longer[i..].iter().zip(shorter.iter()).all(|x| x.0 == x.1));
 
     if is_sublist {
         comparison
