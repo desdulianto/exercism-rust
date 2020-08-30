@@ -19,9 +19,9 @@ fn count_mines(i: usize, j: usize, minefield: &[&str]) -> usize {
         (x + 1, y + 1),
     ]
     .iter()
-    .filter(|pos| (0..rows as isize).contains(&pos.0) && (0..cols as isize).contains(&pos.1))
-    .map(|pos| {
-        let (x, y) = (pos.0 as usize, pos.1 as usize);
+    .filter(|&&(x, y)| x >= 0 && x < (rows as isize) && y >= 0 && y < (cols as isize))
+    .map(|&(x, y)| {
+        let (x, y) = (x as usize, y as usize);
         if Some('*') == minefield[x].chars().nth(y) {
             1
         } else {
