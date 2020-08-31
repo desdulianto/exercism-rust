@@ -1,5 +1,17 @@
 pub mod graph {
     use std::collections::HashMap;
+
+    macro_rules! impl_attrs {
+        () => {
+            pub fn with_attrs(mut self, attrs: &[(&str, &str)]) -> Self {
+                for (k, v) in attrs.iter() {
+                    self.attrs.insert(k.to_string(), v.to_string());
+                }
+                self
+            }
+        };
+    }
+
     #[derive(Default)]
     pub struct Graph {
         pub nodes: Vec<graph_items::node::Node>,
@@ -26,12 +38,7 @@ pub mod graph {
             self
         }
 
-        pub fn with_attrs(mut self, attrs: &[(&str, &str)]) -> Self {
-            for attr in attrs.iter() {
-                self.attrs.insert(attr.0.to_string(), attr.1.to_string());
-            }
-            self
-        }
+        impl_attrs!();
 
         pub fn get_node(&self, node: &str) -> Option<&graph_items::node::Node> {
             self.nodes.iter().find(|x| x.name == node)
@@ -57,12 +64,7 @@ pub mod graph {
                     }
                 }
 
-                pub fn with_attrs(mut self, attrs: &[(&str, &str)]) -> Self {
-                    for attr in attrs.iter() {
-                        self.attrs.insert(attr.0.to_string(), attr.1.to_string());
-                    }
-                    self
-                }
+                impl_attrs!();
             }
         }
 
@@ -82,18 +84,10 @@ pub mod graph {
                     }
                 }
 
-                pub fn with_attrs(mut self, attrs: &[(&str, &str)]) -> Self {
-                    for attr in attrs.iter() {
-                        self.attrs.insert(attr.0.to_string(), attr.1.to_string());
-                    }
-                    self
-                }
+                impl_attrs!();
 
                 pub fn get_attr(&self, attr: &str) -> Option<&str> {
-                    match self.attrs.get(attr) {
-                        Some(x) => Some(&x[..]),
-                        None => None,
-                    }
+                    self.attrs.get(attr).map(|x| x.as_str())
                 }
             }
         }
