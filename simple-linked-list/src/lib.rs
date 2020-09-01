@@ -17,9 +17,9 @@ impl<T> SimpleLinkedList<T> {
     pub fn len(&self) -> usize {
         let mut counter = 0 as usize;
         let mut current = &self.head;
-        while current.is_some() {
+        while let Some(node) = current {
             counter += 1;
-            current = &current.as_ref().unwrap().next;
+            current = &node.next;
         }
         counter
     }
