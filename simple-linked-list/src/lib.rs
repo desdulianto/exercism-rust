@@ -46,22 +46,12 @@ impl<T> SimpleLinkedList<T> {
     }
 
     pub fn rev(self) -> SimpleLinkedList<T> {
-        let mut current = self.head;
-        let mut head: Option<Box<Node<T>>> = None;
-        loop {
-            match current {
-                Some(node) => {
-                    head = Option::from(Box::new(Node {
-                        value: node.value,
-                        next: head,
-                    }));
-                    current = node.next;
-                },
-                None => break SimpleLinkedList {
-                    head,
-                },
-            }
+        let mut list = SimpleLinkedList::new();
+        let mut l = self;
+        while let Some(value) = l.pop() {
+            list.push(value);
         }
+        list
     }
 }
 
@@ -90,14 +80,9 @@ impl<T> Into<Vec<T>> for SimpleLinkedList<T> {
     fn into(self) -> Vec<T> {
         let mut res: Vec<T> = Vec::new();
         let mut i = self.rev();
-        loop {
-            match i.pop() {
-                Some(node) => {
-                    res.push(node);
-                },
-                None => break,
-            }
-        };
+        while let Some(value) = i.pop() {
+            res.push(value);
+        }
         res
     }
 }
