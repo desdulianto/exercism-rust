@@ -1,12 +1,4 @@
 fn count_mines(i: usize, j: usize, minefield: &[&str]) -> usize {
-    let (rows, cols) = (
-        minefield.len(),
-        if !minefield[i].is_empty() {
-            minefield[0].len()
-        } else {
-            0
-        },
-    );
     let (x, y) = (i as isize, j as isize);
     [
         (x - 1, y - 1),
@@ -19,10 +11,15 @@ fn count_mines(i: usize, j: usize, minefield: &[&str]) -> usize {
         (x + 1, y + 1),
     ]
     .iter()
-    .filter(|&&(x, y)| x >= 0 && x < (rows as isize) && y >= 0 && y < (cols as isize))
     .map(|&(x, y)| {
-        let (x, y) = (x as usize, y as usize);
-        if Some('*') == minefield[x].chars().nth(y) {
+        if Some('*')
+            == minefield
+                .get(x as usize)
+                .or(Some(&""))
+                .unwrap()
+                .chars()
+                .nth(y as usize)
+        {
             1
         } else {
             0
