@@ -1,7 +1,8 @@
-use std::collections::HashMap;
+use std::collections::{BTreeMap, BTreeSet};
+use std::iter::FromIterator;
 
 pub struct School {
-    roster: HashMap<u32, Vec<String>>,
+    roster: BTreeMap<u32, BTreeSet<String>>,
 }
 
 impl Default for School {
@@ -13,19 +14,19 @@ impl Default for School {
 impl School {
     pub fn new() -> School {
         School {
-            roster: HashMap::new(),
+            roster: BTreeMap::new(),
         }
     }
 
     pub fn add(&mut self, grade: u32, student: &str) {
-        let students = self.roster.entry(grade).or_insert_with(Vec::new);
-        (*students).push(student.to_string());
+        self.roster
+            .entry(grade)
+            .or_insert_with(BTreeSet::new)
+            .insert(student.to_string());
     }
 
     pub fn grades(&self) -> Vec<u32> {
-        let mut grades = self.roster.keys().copied().collect::<Vec<u32>>();
-        grades.sort();
-        grades
+        self.roster.keys().copied().collect()
     }
 
     // If grade returned an `Option<&Vec<String>>`,
@@ -34,11 +35,7 @@ impl School {
     // the internal implementation is free to use whatever it chooses.
     pub fn grade(&self, grade: u32) -> Option<Vec<String>> {
         match self.roster.get(&grade) {
-            Some(students) => {
-                let mut students = students.to_owned();
-                students.sort();
-                Some(students)
-            }
+            Some(students) => Some(Vec::from_iter(students.to_owned())),
             None => None,
         }
     }
