@@ -34,9 +34,6 @@ impl School {
     // By returning an owned vector instead,
     // the internal implementation is free to use whatever it chooses.
     pub fn grade(&self, grade: u32) -> Option<Vec<String>> {
-        match self.roster.get(&grade) {
-            Some(students) => Some(Vec::from_iter(students.to_owned())),
-            None => None,
-        }
+        self.roster.get(&grade).map(|x| Vec::from_iter(x.to_owned()))
     }
 }
